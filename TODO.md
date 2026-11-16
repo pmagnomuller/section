@@ -12,7 +12,7 @@ Working on this machine:
 - VST3 is built with `cargo xtask bundle section --release` and installed at `~/Library/Audio/Plug-Ins/VST3/section.vst3`, ad-hoc signed. MIDI channel 10 plays drums. Any other channel plays bass. While Live’s transport is running, the plugin follows the host tempo and position. Vendor Pedro Muller. This Mac has no Ableton, so Live has not loaded it.
 - The browser app plays locally. Play starts Funk. Chorus, Stop, a pad, Record, Groove, Save, and Factory were walked in the browser.
 - Browser audio renders the wasm engine on the main thread and sends buffers to `web/public/player-worklet.js`. The wasm-bindgen glue does not load inside an AudioWorklet, so the engine stays off the audio thread.
-- The production build is in the Astro site at `public/drum-machine/`, with a Section nav item. The page is https://pedro-muller.com/drum-machine/.
+- The production build is in the Astro site at `public/drum-machine/`. The homepage lists it under Projects (not in the top nav). The page is https://pedro-muller.com/drum-machine/.
 - `MANUAL.md` maps Section to a Zoom RhythmTrak RT-223 and covers jamming with guitar or bass (mute the synth bass). The page has a Manual panel with the short path.
 - Generated wasm (`web/public/engine`), `target/`, `web/node_modules`, and `web/dist` are gitignored. Rebuild them; do not commit them. Commands are in `BUILD.md`.
 
