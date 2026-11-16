@@ -71,7 +71,8 @@ app.innerHTML = `
     <div class="fx" id="fx"></div>
     <p class="help">
       Sections 1–6 change the band. Drums: A S D F G H J and Z X C V B N.
-      Space plays and stops. [ ] tempo. − = key. Tab switches drums and bass. \\ mutes bass. R records into the current pattern.
+      In Groove, those pads stack the song’s sections. Space plays and stops. [ ] tempo. − = key.
+      Tab switches drums and bass. \\ mutes bass. R records into the current pattern.
     </p>
   </main>
 `;
@@ -264,15 +265,14 @@ function paintPads() {
     [...root.children].forEach((child, index) => {
       const buttonEl = child as HTMLButtonElement;
       const key = PAD_KEYS[index].toUpperCase();
-      const title = hud?.drumPart ? PAD_LABELS[index] : bassName(index);
-      buttonEl.innerHTML = `${title}<small>${key}</small>`;
+      buttonEl.innerHTML = `${padTitle(index)}<small>${key}</small>`;
     });
     return;
   }
   root.innerHTML = "";
   PAD_LABELS.forEach((_, index) => {
     const el = document.createElement("button");
-    el.innerHTML = `${hud?.drumPart ? PAD_LABELS[index] : bassName(index)}<small>${PAD_KEYS[index].toUpperCase()}</small>`;
+    el.innerHTML = `${padTitle(index)}<small>${PAD_KEYS[index].toUpperCase()}</small>`;
     el.addEventListener("pointerdown", (event) => {
       event.preventDefault();
       const rect = el.getBoundingClientRect();
@@ -300,10 +300,10 @@ function paintTune() {
   if (root.dataset.signature === signature) return;
   root.dataset.signature = signature;
   root.innerHTML = "";
-  button(root, "Tempo −", false, () => send({ t: "set_tempo", bpm: Math.max(40, h.tempo - 1) }));
-  button(root, "Tempo +", false, () => send({ t: "set_tempo", bpm: Math.min(280, h.tempo + 1) }));
-  button(root, "Key −", false, () => send({ t: "set_key", key: (h.key + 11) % 12 }));
-  button(root, "Key +", false, () => send({ t: "set_key", key: (h.key + 1) % 12 }));
+  button(root, "Tempo −", false, () => send({ t: "set_tempo", bpm: Math.max(40, (hud?.tempo ?? 120) - 1) }));
+  button(root, "Tempo +", false, () => send({ t: "set_tempo", bpm: Math.min(280, (hud?.tempo ?? 120) + 1) }));
+  button(root, "Key −", false, () => send({ t: "set_key", key: ((hud?.key ?? 0) + 11) % 12 }));
+  button(root, "Key +", false, () => send({ t: "set_key", key: ((hud?.key ?? 0) + 1) % 12 }));
   button(root, "Oct −", false, () => send({ t: "set_octave", octave: Math.max(-2, h.octave - 1) }));
   button(root, "Oct +", false, () => send({ t: "set_octave", octave: Math.min(2, h.octave + 1) }));
   if (catalog) {
@@ -367,10 +367,10 @@ function paintGrid() {
       cell.className = "bass-cell";
       cell.dataset.bass = String(step);
       cell.addEventListener("click", () => {
-        const current = h.bassGrid[step];
+        const current = hud?.bassGrid[step] ?? -1;
         if (current >= 0) send({ t: "set_bass_step", step, note: -1, dur: 1 });
         else {
-          const rootNote = 36 + h.key + h.octave * 12;
+          const rootNote = 36 + (hud?.key ?? 0) + (hud?.octave ?? 0) * 12;
           send({ t: "set_bass_step", step, note: rootNote, dur: 2 });
         }
       });
@@ -481,6 +481,12 @@ function slider(label: string, value: number, min: number, max: number, step: nu
   input.addEventListener("input", () => onInput(Number(input.value)));
   wrap.append(input);
   return wrap;
+}
+
+function padTitle(index: number) {
+  if (hud?.mode === 2) return hud.songPads[index] ?? "—";
+  if (hud?.drumPart === false) return bassName(index);
+  return PAD_LABELS[index];
 }
 
 function bassName(pad: number) {

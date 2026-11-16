@@ -248,7 +248,23 @@ impl Engine {
         match cmd {
             Command::Play => self.play(),
             Command::Stop => self.stop(),
-            Command::ToggleRec => self.recording = !self.recording,
+            Command::ToggleRec => {
+                if self.recording {
+                    self.recording = false;
+                    self.held_bass = None;
+                } else {
+                    if self.mode != 0 {
+                        let ix = self.shown_pattern();
+                        self.mode = 0;
+                        self.jam = false;
+                        self.oneshot = None;
+                        self.pending = None;
+                        self.pattern_ix = ix;
+                        self.layers_for_transport();
+                    }
+                    self.recording = true;
+                }
+            },
             Command::SetMode { mode } => {
                 self.mode = mode.min(2);
                 self.jam = false;
@@ -796,7 +812,7 @@ impl Engine {
         } else {
             let note = self.bass_note_for_pad(pad);
             self.bass_on(note, vel);
-            if self.recording && self.mode == 0 {
+            if self.recording {
                 self.held_bass = Some((note, self.record_beat()));
             }
         }
@@ -807,7 +823,7 @@ impl Engine {
             return;
         }
         let note = self.bass_note_for_pad(pad);
-        if self.recording && self.mode == 0 {
+        if self.recording {
             if let Some((held, start)) = self.held_bass.take() {
                 if held == note {
                     self.record_bass(held, start, self.record_beat());
@@ -982,7 +998,7 @@ impl Engine {
         }
         let assign = self.doc.kits[self.kit_ix].pads.get(pad as usize).cloned();
         let Some(assign) = assign else { return };
-        if from_user && self.recording && self.mode == 0 {
+        if from_user && self.recording {
             self.record_drum(pad, vel);
         }
         self.seed = self.seed.wrapping_add(1);
@@ -996,7 +1012,7 @@ impl Engine {
     }
 
     fn record_drum(&mut self, pad: u8, vel: f32) {
-        let ix = self.pattern_ix;
+        let ix = self.edit_ix();
         let beat = self.quantized_local(ix);
         let tick = (beat * 96.0).round() as u32;
         let pattern = &mut self.doc.patterns[ix];
@@ -1007,7 +1023,7 @@ impl Engine {
     }
 
     fn record_bass(&mut self, sounding: u8, start: f64, end: f64) {
-        let ix = self.pattern_ix;
+        let ix = self.edit_ix();
         let len = self.pattern_len(ix).max(0.25);
         let mut dur_beats = (end - start).rem_euclid(len).max(0.1);
         if dur_beats > len {
@@ -1082,11 +1098,11 @@ impl Engine {
         }
         if on {
             self.bass_on(note, vel.max(0.05));
-            if self.recording && self.mode == 0 {
+            if self.recording {
                 self.held_bass = Some((note, self.record_beat()));
             }
         } else {
-            if self.recording && self.mode == 0 {
+            if self.recording {
                 if let Some((held, start)) = self.held_bass.take() {
                     if held == note {
                         self.record_bass(held, start, self.record_beat());
@@ -1098,7 +1114,7 @@ impl Engine {
     }
 
     fn record_beat(&self) -> f64 {
-        self.quantized_local(self.pattern_ix)
+        self.quantized_local(self.edit_ix())
     }
 
     fn quantized_local(&self, pattern: usize) -> f64 {
@@ -1403,5 +1419,74 @@ mod tests {
         let json = engine.export_json();
         assert!(engine.load_json(&json));
         assert!(engine.export_json().len() > 1000);
+    }
+
+    #[test]
+    fn bass_step_toggles() {
+        let mut engine = Engine::new(44_100.0);
+        engine.command(Command::SetMode { mode: 0 });
+        engine.command(Command::ClearBass);
+        engine.command_json(r#"{"t":"set_bass_step","step":0,"note":45,"dur":2}"#).unwrap();
+        assert_eq!(bass_at(&engine, 0), 45);
+        engine.command_json(r#"{"t":"set_bass_step","step":0,"note":-1,"dur":1}"#).unwrap();
+        assert_eq!(bass_at(&engine, 0), -1);
+        engine.command_json(r#"{"t":"set_bass_step","step":0,"note":45,"dur":2}"#).unwrap();
+        assert_eq!(bass_at(&engine, 0), 45);
+    }
+
+    fn bass_at(engine: &Engine, step: usize) -> i64 {
+        let hud: serde_json::Value = serde_json::from_str(&engine.hud_json()).unwrap();
+        hud["bassGrid"][step].as_i64().unwrap()
+    }
+
+    #[test]
+    fn section_starts_the_chorus() {
+        let mut engine = Engine::new(44_100.0);
+        engine.command(Command::Section { pad: 2 });
+        let hud: serde_json::Value = serde_json::from_str(&engine.hud_json()).unwrap();
+        assert_eq!(hud["playing"], true);
+        assert!(hud["patternName"].as_str().unwrap().contains("Chorus"), "{}", hud["patternName"]);
+    }
+
+    #[test]
+    fn record_from_song_mode_writes_the_heard_pattern() {
+        let mut engine = Engine::new(44_100.0);
+        engine.command(Command::Section { pad: 2 });
+        engine.command(Command::ToggleRec);
+        engine.command(Command::ClearDrums);
+        engine.command(Command::PadDown { pad: 4, vel: 1.0 });
+        let hud: serde_json::Value = serde_json::from_str(&engine.hud_json()).unwrap();
+        assert_eq!(hud["mode"], 0);
+        assert_eq!(hud["recording"], true);
+        assert!(hud["patternName"].as_str().unwrap().contains("Chorus"), "{}", hud["patternName"]);
+        assert_eq!(hit_count(&engine, 4), 1);
+    }
+
+    #[test]
+    fn groove_and_factory_reset_keep_playing() {
+        let mut engine = Engine::new(44_100.0);
+        engine.command(Command::SetMode { mode: 2 });
+        engine.command(Command::Groove { pad: 2 });
+        let mut l = vec![0.0; 44_100];
+        let mut r = vec![0.0; 44_100];
+        engine.render(l.len(), None, &[], &mut l, &mut r);
+        let rms = (l.iter().map(|s| s * s).sum::<f32>() / l.len() as f32).sqrt();
+        assert!(rms > 0.02, "rms {rms}");
+        engine.command(Command::ClearDrums);
+        engine.command(Command::ResetFactory);
+        let hud: serde_json::Value = serde_json::from_str(&engine.hud_json()).unwrap();
+        assert_eq!(hud["songName"], "Funk");
+        assert_eq!(hud["mode"], 1);
+        assert!(hit_count(&engine, 0) > 0);
+    }
+
+    fn hit_count(engine: &Engine, pad: usize) -> usize {
+        let hud: serde_json::Value = serde_json::from_str(&engine.hud_json()).unwrap();
+        hud["grid"][pad]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|cell| cell.as_u64().unwrap_or(0) > 0)
+            .count()
     }
 }

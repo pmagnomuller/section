@@ -7,30 +7,23 @@ A drum and bass rhythm section for the MacBook: play it in the browser, and load
 Working on this machine:
 
 - One Rust engine (`crates/engine`) shared by the VST and the browser. 16 kits, 12 bass programs, 14 styles with intro / verse / chorus / fill / break / end, song mode, swing, key, and effects.
-- Engine tests pass (`cargo test -p section-engine --lib`).
-- VST3 **Section** is built and installed at `~/Library/Audio/Plug-Ins/VST3/Section.vst3`, ad-hoc signed. MIDI channel 10 plays drums. Any other channel plays bass. While Live’s transport is running, the plugin follows the host tempo and position. Vendor Pedro Muller.
-- The browser app (`web/`) plays locally. Play starts the Funk song, Stop stops it, and the page has sections, pads, kits, bass, the step grid, and effects.
+- Engine tests pass (`cargo test -p section-engine --lib`), including section changes, recording into the heard pattern, groove, and factory reset.
+- Record switches to pattern mode on the pattern you were hearing, then writes drums and bass into it.
+- VST3 is built with `cargo xtask bundle section --release` and installed at `~/Library/Audio/Plug-Ins/VST3/section.vst3`, ad-hoc signed. MIDI channel 10 plays drums. Any other channel plays bass. While Live’s transport is running, the plugin follows the host tempo and position. Vendor Pedro Muller. This Mac has no Ableton, so Live has not loaded it.
+- The browser app plays locally. Play starts Funk. Chorus, Stop, a pad, Record, Groove, Save, and Factory were walked in the browser.
 - Browser audio renders the wasm engine on the main thread and sends buffers to `web/public/player-worklet.js`. The wasm-bindgen glue does not load inside an AudioWorklet, so the engine stays off the audio thread.
-- Generated wasm (`web/public/engine`), `target/`, `web/node_modules`, and `web/dist` are gitignored. Rebuild them; do not commit them.
+- The production build is in the Astro site at `public/drum-machine/`, with a Section nav item. The page is https://pedro-muller.com/drum-machine/.
+- Generated wasm (`web/public/engine`), `target/`, `web/node_modules`, and `web/dist` are gitignored. Rebuild them; do not commit them. Commands are in `BUILD.md`.
 
 Not done yet:
 
-- Nothing is on pedro-muller.com. The Astro site still has no `/drum-machine` page and no nav link.
-- Ableton has not been rescanned in this session, so Live may not list Section until Plug-Ins is rescanned.
-- Recording, groove mode, and Save / Factory exist in the UI and have not been walked through end to end.
-- There is no build or install note beyond this file.
+- Rescan plug-ins in Ableton on a machine that has Live, and confirm the band follows the transport.
+- After the site deploy, play a song on https://pedro-muller.com/drum-machine/, change section, hit a pad, and stop.
 
 ## Plan
 
-1. Rescan plug-ins in Ableton Live 11 and load Section on a MIDI track. Press Play in Live and confirm the band follows the transport. Stop Live and confirm the plugin stops. Try a section button and a pad.
-2. Publish the browser build at https://pedro-muller.com/drum-machine.
-   - Rebuild wasm into `web/public/engine` (`wasm-bindgen` 0.2.130, matching the crate).
-   - Production Vite base is `/drum-machine/`.
-   - Copy the build into the Astro site at `public/drum-machine/` so it is served as static files.
-   - Add a nav item. The site uses trailing slashes.
-3. On the live page, play a song, change section, hit a pad, and stop.
-4. Walk recording, groove mode, and Save / Factory once in the browser.
-5. Add a short build note: rustup stable, `wasm32-unknown-unknown`, wasm-bindgen 0.2.130, `cargo build -p section --release`, codesign the bundle, `npm run dev` and `npm run build`.
+1. On a Mac with Ableton Live, rescan plug-ins and load Section on a MIDI track. Press Play in Live and confirm the band follows the transport. Stop Live and confirm the plugin stops. Try a section button and a pad.
+2. On the live page, play a song, change section, hit a pad, and stop.
 
 ## Local browser
 
