@@ -24,7 +24,7 @@ For guitar and bass practice, mute the synth bass and treat Song mode like the R
 
 1. Open the page and click **Play** once so the browser can start audio.
 2. Click **Bass on** so it becomes **Bass off**, or press `\`. The synth bass stops. The drums keep going.
-3. Pick a style in the song row: Funk, Rock, Hard Rock, Hip-hop, House, Disco, RnB, Pop, Jazz, Reggae, DnB, Afro, Blues, Ballad.
+3. Pick a style in the song row. For guitar jams start with **Rock**, **Hard Rock**, **Indie Rock**, **Alt Rock**, **Blues**, or **Blues Shuffle**. The older styles (Funk, House, Jazz, …) are still there.
 4. Set the tempo with **Tempo − / +**, or `[` and `]`, until it matches the song you want to play.
 5. Stay in **Song**. Press **Space** or **Play**, or hit a section pad.
 6. Build the form live with sections **1–6**, the same idea as the RT-223 song pads:
@@ -39,7 +39,7 @@ For guitar and bass practice, mute the synth bass and treat Song mode like the R
 
 Leave the synth bass muted. Your bass and guitar fill the low end.
 
-Tip: if the feel is too stiff, raise **Swing**. If the kit is wrong for the room, change **Kit**. Leave **Key** alone when the bass is muted; key mainly moves the synth bass.
+Tip: if the feel is too stiff, raise **Swing**. For rock / indie / blues, try kits **Indie Room**, **Alt Dry**, or **Blues Shuffle** — the original kits stay in the list. Leave **Key** alone when the bass is muted; key mainly moves the synth bass.
 
 ## What the modes mean
 

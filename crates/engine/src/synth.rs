@@ -24,6 +24,14 @@ pub const TOM808: u8 = 20;
 pub const STICK: u8 = 21;
 pub const BRUSH: u8 = 22;
 pub const RIDE_BELL: u8 = 23;
+/// Beater-forward rock kick: more click, less boom than `KICK`.
+pub const KICK_ROCK: u8 = 24;
+/// Crack-forward rock snare with longer wire buzz.
+pub const SNARE_ROCK: u8 = 25;
+/// Darker closed hat for indie / alt kits.
+pub const HAT_ROCK: u8 = 26;
+/// Shorter trashy crash for alternative kits.
+pub const CRASH_ALT: u8 = 27;
 
 const TAU: f32 = std::f32::consts::TAU;
 
@@ -109,6 +117,15 @@ pub fn render_voice(v: &mut Voice, sr: f32) -> f32 {
             let amp = (-t * (5.2 / v.decay)).exp();
             (body * 1.05 + click * 0.42) * amp
         }
+        KICK_ROCK => {
+            let f = 58.0 * tune * (1.0 + 22.0 * (-t * 38.0).exp());
+            v.phase += f * dt;
+            let body = sin_phase(v.phase);
+            let click = noise(&mut v.nstate) * (-t * 420.0).exp();
+            let thump = sin_phase(v.phase * 0.5) * (-t * 18.0).exp() * 0.35;
+            let amp = (-t * (7.4 / v.decay)).exp();
+            (body * 0.92 + click * 0.7 + thump) * amp
+        }
         KICK808 => {
             let f = 46.0 * tune * (1.0 + 11.0 * (-t * 16.0).exp());
             v.phase += f * dt;
@@ -123,6 +140,18 @@ pub fn render_voice(v: &mut Voice, sr: f32) -> f32 {
             let hp = n - v.lp;
             let namp = (-t * (11.0 / v.decay)).exp();
             tone * 0.55 + hp * namp * 0.95
+        }
+        SNARE_ROCK => {
+            v.phase += 210.0 * tune * dt;
+            v.phase2 += 340.0 * tune * dt;
+            let tone = sin_phase(v.phase) * (-t * 28.0).exp() * 0.45
+                + sin_phase(v.phase2) * (-t * 55.0).exp() * 0.22;
+            let n = noise(&mut v.nstate);
+            v.lp += 0.48 * (n - v.lp);
+            let hp = n - v.lp;
+            let crack = hp * (-t * 90.0).exp() * 0.55;
+            let wire = hp * (-t * (7.5 / v.decay)).exp();
+            tone + crack + wire * 0.85
         }
         SNARE808 => {
             v.phase += 176.0 * tune * dt;
@@ -148,18 +177,32 @@ pub fn render_voice(v: &mut Voice, sr: f32) -> f32 {
             let mul = if v.inst == SNAP { 0.7 } else { 1.0 };
             bp * burst * tail * mul
         }
-        HAT | OPEN | HAT808 | SHAKER | BRUSH => {
-            let closed = matches!(v.inst, HAT | HAT808);
-            let metal_f = if v.inst == BRUSH { 2200.0 } else { 6400.0 };
+        HAT | OPEN | HAT808 | HAT_ROCK | SHAKER | BRUSH => {
+            let closed = matches!(v.inst, HAT | HAT808 | HAT_ROCK);
+            let metal_f = match v.inst {
+                BRUSH => 2200.0,
+                HAT_ROCK => 4800.0,
+                _ => 6400.0,
+            };
             v.phase += metal_f * tune * dt;
             v.phase2 += metal_f * 1.47 * tune * dt;
             let metal = sin_phase(v.phase).signum() * 0.25 + sin_phase(v.phase2).signum() * 0.18;
             let n = noise(&mut v.nstate);
-            let coef = if v.inst == SHAKER { 0.35 } else { 0.72 };
+            let coef = if v.inst == SHAKER {
+                0.35
+            } else if v.inst == HAT_ROCK {
+                0.58
+            } else {
+                0.72
+            };
             v.lp += coef * (n - v.lp);
             let hp = n - v.lp;
             let d = if closed {
-                62.0 / v.decay
+                if v.inst == HAT_ROCK {
+                    48.0 / v.decay
+                } else {
+                    62.0 / v.decay
+                }
             } else if v.inst == OPEN {
                 7.5 / v.decay
             } else if v.inst == BRUSH {
@@ -167,7 +210,8 @@ pub fn render_voice(v: &mut Voice, sr: f32) -> f32 {
             } else {
                 18.0 / v.decay
             };
-            (metal + hp * 0.85) * (-t * d).exp()
+            let bright = if v.inst == HAT_ROCK { 0.7 } else { 0.85 };
+            (metal + hp * bright) * (-t * d).exp()
         }
         RIM | STICK | CLAVE => {
             let f = match v.inst {
@@ -209,24 +253,28 @@ pub fn render_voice(v: &mut Voice, sr: f32) -> f32 {
             let dec = if v.inst == TOM808 { 2.2 } else { 4.4 };
             (sin_phase(v.phase) * 0.95 + n * 0.18) * (-t * (dec / v.decay)).exp()
         }
-        RIDE | RIDE_BELL | CRASH => {
+        RIDE | RIDE_BELL | CRASH | CRASH_ALT => {
             let long = v.inst == CRASH;
-            v.phase += 320.0 * tune * dt;
-            v.phase2 += 740.0 * tune * dt;
-            v.phase3 += 1280.0 * tune * dt;
+            let trash = v.inst == CRASH_ALT;
+            v.phase += if trash { 280.0 } else { 320.0 } * tune * dt;
+            v.phase2 += if trash { 910.0 } else { 740.0 } * tune * dt;
+            v.phase3 += if trash { 1680.0 } else { 1280.0 } * tune * dt;
             let metal = sin_phase(v.phase) * 0.22
                 + sin_phase(v.phase2) * 0.16
-                + sin_phase(v.phase3).signum() * 0.12;
+                + sin_phase(v.phase3).signum() * if trash { 0.22 } else { 0.12 };
             let n = noise(&mut v.nstate);
-            v.lp += 0.25 * (n - v.lp);
+            v.lp += if trash { 0.4 } else { 0.25 } * (n - v.lp);
             let d = if long {
                 1.15 / v.decay
+            } else if trash {
+                3.8 / v.decay
             } else if v.inst == RIDE_BELL {
                 6.5 / v.decay
             } else {
                 2.4 / v.decay
             };
-            (metal + (n - v.lp) * 0.55) * (-t * d).exp()
+            let air = if trash { 0.85 } else { 0.55 };
+            (metal + (n - v.lp) * air) * (-t * d).exp()
         }
         _ => 0.0,
     };

@@ -6,7 +6,7 @@ A drum and bass rhythm section for the MacBook: play it in the browser, and load
 
 Working on this machine:
 
-- One Rust engine (`crates/engine`) shared by the VST and the browser. 16 kits, 12 bass programs, 14 styles with intro / verse / chorus / fill / break / end, song mode, swing, key, and effects.
+- One Rust engine (`crates/engine`) shared by the VST and the browser. 19 kits (original 16 plus Indie Room, Alt Dry, Blues Shuffle), 12 bass programs, 17 styles including Indie Rock, Alt Rock, and Blues Shuffle, with intro / verse / chorus / fill / break / end, song mode, swing, key, and effects.
 - Engine tests pass (`cargo test -p section-engine --lib`), including section changes, recording into the heard pattern, groove, and factory reset.
 - Record switches to pattern mode on the pattern you were hearing, then writes drums and bass into it.
 - VST3 is built with `cargo xtask bundle section --release` and installed at `~/Library/Audio/Plug-Ins/VST3/section.vst3`, ad-hoc signed. MIDI channel 10 plays drums. Any other channel plays bass. While Live’s transport is running, the plugin follows the host tempo and position. Vendor Pedro Muller. This Mac has no Ableton, so Live has not loaded it.

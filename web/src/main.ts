@@ -73,7 +73,7 @@ app.innerHTML = `
       <ol>
         <li>Click <b>Play</b> once so the browser can start audio.</li>
         <li>Click <b>Bass on</b> so it becomes <b>Bass off</b>, or press <kbd>\\</kbd>. Drums keep going; synth bass stops.</li>
-        <li>Pick a style in the song row (Funk, Rock, Blues, …).</li>
+        <li>Pick a style. For guitar jams: Rock, Indie Rock, Alt Rock, Blues, Blues Shuffle.</li>
         <li>Set tempo with <b>Tempo − / +</b> or <kbd>[</kbd> <kbd>]</kbd>.</li>
         <li>Stay in <b>Song</b>. Press <kbd>Space</kbd> or hit sections <b>1–6</b> like the RT-223 song pads: Intro, Verse, Chorus, Fill, Break, End.</li>
         <li>Hit pads for live accents. Keys: <kbd>A S D F G H J</kbd> and <kbd>Z X C V B N</kbd>.</li>

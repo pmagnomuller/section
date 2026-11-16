@@ -246,6 +246,52 @@ fn styles() -> Vec<Style> {
             extra: &[(10, "x.x.x.x.x.x.x.x. x.x.x.x.x.x.x.x.")],
             bassline: "c2 ~ ~ ~ ~ ~ g1 ~ ~ ~ e2 ~ ~ ~ ~ ~ c2 ~ ~ ~ d2 ~ ~ ~ e2 ~ ~ ~ c2 ~ ~ ~",
         },
+        // New styles use the rock / blues kits appended below. Existing kits stay as they were.
+        Style {
+            name: "Indie Rock",
+            kit: 16,
+            bass: 1,
+            bpm: 112.0,
+            swing: 0.04,
+            key: 2,
+            two_bar: false,
+            kick: "X.....x.X...X...",
+            snare: "....X.......X...",
+            hat: "x.x.x.x.x.x.x.x.",
+            open: "........X.......",
+            extra: &[(4, "..............o.")],
+            bassline: "d2 . . a1 . d2 . . . f2 . . a1 . . .",
+        },
+        Style {
+            name: "Alt Rock",
+            kit: 17,
+            bass: 1,
+            bpm: 128.0,
+            swing: 0.0,
+            key: 7,
+            two_bar: false,
+            kick: "X...X...X...X.X.",
+            snare: "....X.......X...",
+            hat: "xxxxxxxxxxxxxxxx",
+            open: "..............X.",
+            extra: &[(11, "X...............")],
+            bassline: "g1 ~ . g1 ~ . bb1 ~ . . g1 ~ . d1 ~ .",
+        },
+        Style {
+            name: "Blues Shuffle",
+            kit: 18,
+            bass: 0,
+            bpm: 96.0,
+            swing: 0.68,
+            key: 4,
+            two_bar: false,
+            kick: "X.....x.X.......",
+            snare: "....X.......X...",
+            hat: "x.x.x.x.x.x.x.x.",
+            open: "........x.......",
+            extra: &[(4, "..o.....o.......")],
+            bassline: "e2 ~ ~ g2 ~ ~ a2 ~ ~ ~ b2 ~ ~ e2 ~ ~",
+        },
     ]
 }
 
@@ -634,6 +680,52 @@ fn kits() -> Vec<Kit> {
         ]),
         std("Electro", KICK808, SNARE808, HAT808, OPEN, TOM808, RIDE, CRASH, CLAP, 1.3, 0.22),
         std("Garage", KICK, SNARE, HAT, OPEN, TOM_M, RIDE, CRASH, CLAP, 0.8, 0.15),
+        // Rock / blues kits for guitar jams. Appended so older kit indices stay stable.
+        kit("Indie Room", &[
+            (KICK_ROCK, -1.0, 1.0, 0.0, 0.95, 0.32),
+            (SNARE_ROCK, 0.5, 0.95, 0.04, 0.95, 0.4),
+            (HAT_ROCK, 0.0, 0.4, 0.22, 0.85, 0.22),
+            (OPEN, -1.0, 0.48, 0.32, 1.15, 0.4),
+            (RIM, 0.0, 0.55, -0.12, 0.7, 0.18),
+            (COWBELL, -2.0, 0.28, 0.35, 0.8, 0.15),
+            (TAMB, 0.0, 0.38, -0.3, 1.0, 0.35),
+            (TOM_H, 2.0, 0.72, -0.22, 0.9, 0.3),
+            (TOM_M, -1.0, 0.76, 0.0, 1.0, 0.3),
+            (TOM_L, -5.0, 0.8, 0.26, 1.15, 0.32),
+            (RIDE, 0.0, 0.4, 0.4, 1.35, 0.45),
+            (CRASH, -1.0, 0.52, -0.18, 1.5, 0.55),
+            (CLAP, 1.0, 0.45, 0.08, 0.8, 0.28),
+        ]),
+        kit("Alt Dry", &[
+            (KICK_ROCK, 1.0, 1.05, 0.0, 0.7, 0.12),
+            (SNARE_ROCK, 1.5, 1.0, 0.02, 0.7, 0.16),
+            (HAT_ROCK, 1.0, 0.46, 0.28, 0.6, 0.1),
+            (OPEN, 0.0, 0.5, 0.38, 0.9, 0.2),
+            (RIM, 1.0, 0.62, -0.08, 0.55, 0.08),
+            (STICK, 0.0, 0.4, 0.3, 0.55, 0.08),
+            (SHAKER, 0.0, 0.32, -0.35, 0.7, 0.12),
+            (TOM_H, 3.0, 0.7, -0.2, 0.65, 0.15),
+            (TOM_M, 0.0, 0.74, 0.0, 0.75, 0.15),
+            (TOM_L, -4.0, 0.78, 0.24, 0.85, 0.15),
+            (RIDE, 2.0, 0.36, 0.42, 0.9, 0.18),
+            (CRASH_ALT, 0.0, 0.58, -0.22, 1.0, 0.28),
+            (SNAP, 0.0, 0.5, 0.05, 0.65, 0.12),
+        ]),
+        kit("Blues Shuffle", &[
+            (KICK_ROCK, -2.0, 0.9, 0.0, 1.05, 0.38),
+            (SNARE_ROCK, -1.0, 0.78, 0.05, 1.05, 0.42),
+            (HAT_ROCK, -1.0, 0.38, 0.18, 0.95, 0.28),
+            (OPEN, -2.0, 0.42, 0.28, 1.25, 0.45),
+            (RIM, -1.0, 0.6, -0.1, 0.75, 0.2),
+            (COWBELL, -3.0, 0.3, 0.35, 0.9, 0.18),
+            (TAMB, -1.0, 0.34, -0.28, 1.05, 0.35),
+            (TOM_H, 1.0, 0.65, -0.2, 0.95, 0.32),
+            (TOM_M, -2.0, 0.7, 0.0, 1.05, 0.32),
+            (TOM_L, -6.0, 0.74, 0.22, 1.2, 0.35),
+            (RIDE, -1.0, 0.42, 0.38, 1.45, 0.5),
+            (CRASH, -2.0, 0.45, -0.2, 1.6, 0.58),
+            (CLAP, -1.0, 0.4, 0.05, 0.85, 0.3),
+        ]),
     ]
 }
 
@@ -693,8 +785,14 @@ mod tests {
         let doc = factory();
         assert!(doc.songs.len() >= 8);
         assert!(doc.patterns.len() >= doc.songs.len() * 6);
-        assert_eq!(doc.kits.len(), 16);
+        assert!(doc.kits.len() >= 16);
+        assert_eq!(doc.kits.len(), 19);
         assert_eq!(doc.basses.len(), 12);
+        assert!(doc.songs.iter().any(|s| s.name == "Indie Rock"));
+        assert!(doc.songs.iter().any(|s| s.name == "Alt Rock"));
+        assert!(doc.songs.iter().any(|s| s.name == "Blues Shuffle"));
+        assert!(doc.songs.iter().any(|s| s.name == "Rock"));
+        assert!(doc.songs.iter().any(|s| s.name == "Blues"));
         for song in &doc.songs {
             assert_eq!(song.pads.len(), PADS);
             for step in &song.arrangement {
