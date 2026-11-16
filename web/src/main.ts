@@ -56,12 +56,41 @@ app.innerHTML = `
     <header>
       <div>
         <h1 class="brand">Section</h1>
-        <p class="tag">A drum and bass band for the browser, and the same instrument in Ableton.</p>
+        <p class="tag">RT-223-style rhythm section for jamming. Mute the synth bass and use it as a drum machine with guitar or bass.</p>
       </div>
-      <a class="home" href="https://pedro-muller.com/">Pedro Müller</a>
+      <div class="header-links">
+        <button type="button" class="manual-toggle" id="manual-toggle" aria-expanded="false">Manual</button>
+        <a class="home" href="https://pedro-muller.com/">Pedro Müller</a>
+      </div>
     </header>
+    <section class="manual" id="manual" hidden>
+      <h2>Like a Zoom RhythmTrak RT-223</h2>
+      <p>
+        Song mode with Intro / Verse / Chorus / Fill / Break / End, Pattern for the grid,
+        Groove for stacking loops. Sounds and patterns are original — not a Zoom product.
+      </p>
+      <h2>Jam with guitar or bass</h2>
+      <ol>
+        <li>Click <b>Play</b> once so the browser can start audio.</li>
+        <li>Click <b>Bass on</b> so it becomes <b>Bass off</b>, or press <kbd>\\</kbd>. Drums keep going; synth bass stops.</li>
+        <li>Pick a style in the song row (Funk, Rock, Blues, …).</li>
+        <li>Set tempo with <b>Tempo − / +</b> or <kbd>[</kbd> <kbd>]</kbd>.</li>
+        <li>Stay in <b>Song</b>. Press <kbd>Space</kbd> or hit sections <b>1–6</b> like the RT-223 song pads: Intro, Verse, Chorus, Fill, Break, End.</li>
+        <li>Hit pads for live accents. Keys: <kbd>A S D F G H J</kbd> and <kbd>Z X C V B N</kbd>.</li>
+      </ol>
+      <p>
+        Song is for playing along. Pattern is for rewriting the step grid.
+        Record writes into the pattern you were hearing. Save keeps edits in this browser; Factory restores the stock songs.
+      </p>
+      <p class="manual-more">
+        Full walkthrough and RT-223 map:
+        <a href="/drum-machine/MANUAL.md">MANUAL.md</a>
+        ·
+        <a href="https://github.com/pmagnomuller/section/blob/master/MANUAL.md">on GitHub</a>
+      </p>
+    </section>
     <section class="lcd" id="lcd"></section>
-    <p class="status" id="status">Click play or a pad to start audio.</p>
+    <p class="status" id="status">Mute bass, pick a style, then play. Click play or a pad to start audio.</p>
     <div class="transport" id="transport"></div>
     <div class="songs" id="songs"></div>
     <div class="sections" id="sections"></div>
@@ -70,12 +99,22 @@ app.innerHTML = `
     <div class="grid" id="grid"></div>
     <div class="fx" id="fx"></div>
     <p class="help">
-      Sections 1–6 change the band. Drums: A S D F G H J and Z X C V B N.
-      In Groove, those pads stack the song’s sections. Space plays and stops. [ ] tempo. − = key.
-      Tab switches drums and bass. \\ mutes bass. R records into the current pattern.
+      For drums-only accompaniment: mute the synth bass with <b>Bass on</b> or <kbd>\\</kbd>.
+      Sections 1–6 change the form. Pads: A S D F G H J and Z X C V B N.
+      Space plays and stops. [ ] tempo. Tab switches drums and bass pads. R records.
     </p>
   </main>
 `;
+
+document.querySelector("#manual-toggle")!.addEventListener("click", () => {
+  const panel = document.querySelector("#manual") as HTMLElement;
+  const toggle = document.querySelector("#manual-toggle") as HTMLButtonElement;
+  const open = panel.hasAttribute("hidden");
+  if (open) panel.removeAttribute("hidden");
+  else panel.setAttribute("hidden", "");
+  toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  toggle.classList.toggle("on", open);
+});
 
 let ctx: AudioContext | null = null;
 let handle: {
