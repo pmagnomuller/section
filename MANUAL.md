@@ -10,7 +10,7 @@ Live page: https://www.pedro-muller.com/drum-machine/
 
 | On the RT-223 | In Section |
 | --- | --- |
-| Song mode, pick a song, hit Intro / Verse / Fill / Ending pads | **Song**, pick a style, press sections **1–6** |
+| Song mode, pick a song, hit Intro / Verse / Fill / Ending pads | **Song**, pick a style, press sections **1-6** |
 | Pattern mode, edit the grid / real-time record | **Pattern**, step grid, **Record** |
 | Groove Play (layer patterns from pads) | **Groove** |
 | Drum kits | **Kit** menu |
@@ -27,19 +27,19 @@ For guitar and bass practice, mute the synth bass and treat Song mode like the R
 3. Pick a style in the song row. For guitar jams start with **Rock**, **Hard Rock**, **Indie Rock**, **Alt Rock**, **Blues**, or **Blues Shuffle**. The older styles (Funk, House, Jazz, …) are still there.
 4. Set the tempo with **Tempo − / +**, or `[` and `]`, until it matches the song you want to play.
 5. Stay in **Song**. Press **Space** or **Play**, or hit a section pad.
-6. Build the form live with sections **1–6**, the same idea as the RT-223 song pads:
-   - **1 Intro** — plays once, then goes to the verse
-   - **2 Verse** — loops
-   - **3 Chorus** — loops
-   - **4 Fill** — fill, then back to the latched loop
-   - **5 Break** — break, then back
-   - **6 End** — ending, then stop
+6. Build the form live with sections **1-6**, the same idea as the RT-223 song pads:
+   - **1 Intro**: plays once, then goes to the verse
+   - **2 Verse**: loops
+   - **3 Chorus**: loops
+   - **4 Fill**: fill, then back to the latched loop
+   - **5 Break**: break, then back
+   - **6 End**: ending, then stop
 7. Hit the drum pads while it plays for live accents. Keys: **A S D F G H J** and **Z X C V B N**.
 8. Press **Space** or **Stop** when you are done.
 
 Leave the synth bass muted. Your bass and guitar fill the low end.
 
-Tip: if the feel is too stiff, raise **Swing**. For rock / indie / blues, try kits **Indie Room**, **Alt Dry**, or **Blues Shuffle** — the original kits stay in the list. Leave **Key** alone when the bass is muted; key mainly moves the synth bass.
+Tip: if the feel is too stiff, raise **Swing**. For rock / indie / blues, try kits **Indie Room**, **Alt Dry**, or **Blues Shuffle**. The original kits stay in the list. Leave **Key** alone when the bass is muted; key mainly moves the synth bass.
 
 ## What the modes mean
 
@@ -88,7 +88,7 @@ Like the RT-223, a “song” here is a style with section pads and an arrangeme
 1. Choose the style that matches the feel.
 2. Mute the synth bass.
 3. Set tempo.
-4. Use **1–6** live as the form: Intro → Verse → Fill → Chorus → Break → Verse → End.
+4. Use **1-6** live as the form: Intro, Verse, Fill, Chorus, Break, Verse, End.
 5. If a part needs different drums, switch to **Pattern**, pick that pattern in the Pattern menu, edit the grid, then go back to **Song**.
 
 You do not need to write a full arrangement file for jamming. The section pads are the form.
@@ -98,11 +98,11 @@ You do not need to write a full arrangement file for jamming. The section pads a
 | Keys | Action |
 | --- | --- |
 | **Space** | Play / stop |
-| **1–6** | Section pads (Intro … End) |
+| **1-6** | Section pads (Intro to End) |
 | **A S D F G H J** | First seven drum pads |
 | **Z X C V B N** | Last six drum pads |
-| **[ ]** | Tempo − / + |
-| **− =** | Key − / + (synth bass) |
+| **[** **]** | Tempo down / up |
+| **-** **=** | Key down / up (synth bass) |
 | **Tab** | Drums / bass pads |
 | **\\** | Mute synth bass |
 | **R** | Record |

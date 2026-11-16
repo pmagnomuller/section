@@ -67,15 +67,15 @@ app.innerHTML = `
       <h2>Like a Zoom RhythmTrak RT-223</h2>
       <p>
         Song mode with Intro / Verse / Chorus / Fill / Break / End, Pattern for the grid,
-        Groove for stacking loops. Sounds and patterns are original — not a Zoom product.
+        Groove for stacking loops. Sounds and patterns are original, not a Zoom product.
       </p>
       <h2>Jam with guitar or bass</h2>
       <ol>
         <li>Click <b>Play</b> once so the browser can start audio.</li>
         <li>Click <b>Bass on</b> so it becomes <b>Bass off</b>, or press <kbd>\\</kbd>. Drums keep going; synth bass stops.</li>
         <li>Pick a style. For guitar jams: Rock, Indie Rock, Alt Rock, Blues, Blues Shuffle.</li>
-        <li>Set tempo with <b>Tempo − / +</b> or <kbd>[</kbd> <kbd>]</kbd>.</li>
-        <li>Stay in <b>Song</b>. Press <kbd>Space</kbd> or hit sections <b>1–6</b> like the RT-223 song pads: Intro, Verse, Chorus, Fill, Break, End.</li>
+        <li>Set tempo with <b>Tempo - / +</b> or <kbd>[</kbd> <kbd>]</kbd>.</li>
+        <li>Stay in <b>Song</b>. Press <kbd>Space</kbd> or hit sections <b>1-6</b> like the RT-223 song pads: Intro, Verse, Chorus, Fill, Break, End.</li>
         <li>Hit pads for live accents. Keys: <kbd>A S D F G H J</kbd> and <kbd>Z X C V B N</kbd>.</li>
       </ol>
       <p>
@@ -100,7 +100,7 @@ app.innerHTML = `
     <div class="fx" id="fx"></div>
     <p class="help">
       For drums-only accompaniment: mute the synth bass with <b>Bass on</b> or <kbd>\\</kbd>.
-      Sections 1–6 change the form. Pads: A S D F G H J and Z X C V B N.
+      Sections 1-6 change the form. Pads: A S D F G H J and Z X C V B N.
       Space plays and stops. [ ] tempo. Tab switches drums and bass pads. R records.
     </p>
   </main>
