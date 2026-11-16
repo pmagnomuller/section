@@ -1,0 +1,16 @@
+[package]
+name = "section"
+version = "1.0.0"
+edition = "2021"
+license = "MIT"
+description = "Section drum and bass instrument"
+homepage = "https://pedro-muller.com/drum-machine"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+nih_plug = { git = "https://github.com/robbert-vdh/nih-plug.git" }
+nih_plug_egui = { git = "https://github.com/robbert-vdh/nih-plug.git" }
+parking_lot = "0.12"
+section-engine = { path = "../engine" }

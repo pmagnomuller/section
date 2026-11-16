@@ -1,0 +1,120 @@
+:root {
+  color-scheme: dark;
+  --bg: #0e0d0b;
+  --chassis: #1a1916;
+  --chassis-2: #24221d;
+  --line: #3a342c;
+  --ink: #f3ecdf;
+  --dim: #a39886;
+  --amber: #e7b15a;
+  --lcd: #121a12;
+  --lcd-ink: #d7f2a8;
+  --pad: #2c2923;
+  --pad-edge: #14130f;
+  --hot: #ef7d3c;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: radial-gradient(1200px 600px at 50% -10%, #2a241c, var(--bg)); color: var(--ink); }
+button, select, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: var(--amber); }
+
+.machine {
+  width: min(1120px, calc(100% - 28px));
+  margin: 22px auto 40px;
+  padding: 22px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.04), transparent 80px),
+    var(--chassis);
+  border: 1px solid #000;
+  border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+header, .row, .transport, .tune, .fx {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+header { justify-content: space-between; margin-bottom: 14px; }
+.brand { margin: 0; font-size: 28px; letter-spacing: 0.08em; text-transform: uppercase; }
+.tag, .help, .status { margin: 0; color: var(--dim); }
+.home { text-decoration: none; }
+
+.lcd {
+  background: var(--lcd);
+  color: var(--lcd-ink);
+  border-radius: 14px;
+  padding: 14px 16px;
+  min-height: 92px;
+  font-family: "SF Mono", ui-monospace, Menlo, monospace;
+  box-shadow: inset 0 0 0 1px #071007, 0 0 24px rgba(180, 255, 140, 0.05);
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr 0.8fr;
+  gap: 8px 18px;
+}
+.lcd b { font-weight: 650; }
+.lcd .big { font-size: 22px; letter-spacing: 0.04em; }
+.meter { height: 8px; background: #0b120b; border-radius: 99px; overflow: hidden; }
+.meter span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, #8dcc63, #e7b15a 70%, #ef7d3c); }
+
+.transport button, .tune button, .fx button, .songs button, .sections button, .pads button {
+  border: 0;
+  border-radius: 12px;
+  background: var(--chassis-2);
+  box-shadow: inset 0 -2px 0 #000, 0 1px 0 rgba(255,255,255,0.05);
+}
+.transport button, .tune button, .fx button { padding: 10px 14px; }
+button.on, .songs button.on, .sections button.on { background: var(--hot); color: #1a0d06; }
+button:active { transform: translateY(1px); }
+
+.songs, .sections, .pads, .grid { margin-top: 14px; }
+.songs, .sections { display: flex; flex-wrap: wrap; gap: 8px; }
+.songs button { padding: 8px 12px; border-radius: 999px; }
+.sections button { min-width: 120px; min-height: 64px; font-size: 15px; letter-spacing: 0.08em; }
+
+.pads { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.pads button {
+  min-height: 74px;
+  border-radius: 16px;
+  background: radial-gradient(circle at 50% 20%, #3a362f, var(--pad));
+  box-shadow: 0 8px 0 var(--pad-edge);
+}
+.pads button small { display: block; color: var(--dim); font-size: 11px; }
+.pads button.hit { background: var(--amber); color: #22180a; }
+.pads button.hit small { color: #4a3412; }
+
+.grid {
+  display: grid;
+  gap: 4px;
+  overflow-x: auto;
+}
+.grid-row { display: grid; grid-template-columns: 72px repeat(var(--steps), minmax(16px, 1fr)); gap: 3px; align-items: center; }
+.grid button, .bass-cell {
+  height: 22px;
+  border: 0;
+  border-radius: 4px;
+  background: #2a261f;
+  padding: 0;
+}
+.grid button.on { background: var(--lcd-ink); }
+.grid button.playhead, .bass-cell.playhead { outline: 1px solid var(--amber); }
+.bass-cell { color: var(--lcd-ink); font-family: ui-monospace, monospace; font-size: 10px; }
+.cell-label { color: var(--dim); font-size: 11px; letter-spacing: 0.06em; }
+
+.fx { margin-top: 14px; }
+.fx label { display: flex; flex-direction: column; gap: 4px; color: var(--dim); font-size: 12px; min-width: 120px; }
+.fx input[type="range"] { width: 140px; accent-color: var(--amber); }
+select { background: var(--chassis-2); border: 1px solid var(--line); border-radius: 8px; padding: 6px; }
+
+.help { margin-top: 16px; font-size: 13px; line-height: 1.5; }
+.status { min-height: 1.2em; }
+
+@media (max-width: 800px) {
+  .lcd { grid-template-columns: 1fr; }
+  .pads { grid-template-columns: repeat(4, 1fr); }
+  .sections button { min-width: 90px; }
+}
