@@ -84,7 +84,7 @@ app.innerHTML = `
       </p>
       <p class="manual-more">
         Full walkthrough and RT-223 map:
-        <a href="/drum-machine/MANUAL.md">MANUAL.md</a>
+        <a href="${import.meta.env.BASE_URL}MANUAL.md">MANUAL.md</a>
         ·
         <a href="https://github.com/pmagnomuller/section/blob/master/MANUAL.md">on GitHub</a>
       </p>

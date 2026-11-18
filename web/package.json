@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "cp ../MANUAL.md public/MANUAL.md",
     "dev": "vite",
+    "prebuild": "cp ../MANUAL.md public/MANUAL.md",
     "build": "vite build",
     "preview": "vite preview"
   },

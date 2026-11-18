@@ -21,15 +21,11 @@ npm install
 npm run dev
 ```
 
-`npm run build` writes `web/dist`. For the site, set the base first:
+`npm run build` writes `web/dist` for https://section.pedro-muller.com/. The Vite base is `/`. `prebuild` copies `MANUAL.md` into `web/public/` so the Manual link works.
 
-```sh
-SECTION_BASE=/drum-machine/ npm run build
-```
+Vercel builds the `web/` directory. It does not compile Rust, so `web/public/engine` (the wasm-bindgen output) is committed. After an engine change, rerun the two commands above and commit that folder.
 
-Copy `web/dist` to `public/drum-machine/` in the Astro site. The page is https://pedro-muller.com/drum-machine/.
-
-`web/public/engine`, `target/`, `web/node_modules`, and `web/dist` are generated. Do not commit them.
+`target/`, `web/node_modules`, `web/dist`, and the copied `web/public/MANUAL.md` are generated. Do not commit them.
 
 ## Plugin
 

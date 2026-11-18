@@ -4,7 +4,7 @@ Section is a drum and bass rhythm machine for the browser and Ableton. The workf
 
 Sounds, patterns, and names are original. This is not a Zoom product and not a sample dump of an RT-223.
 
-Live page: https://www.pedro-muller.com/drum-machine/
+Live page: https://section.pedro-muller.com/
 
 ## If you know an RT-223
 
