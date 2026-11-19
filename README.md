@@ -2,7 +2,7 @@
 
 A drum and bass rhythm machine for the browser and Ableton Live. Built for personal practice on guitar and bass, shared so other people can try the same instrument.
 
-Live demo: https://section.pedro-muller.com/
+Live demo: https://section-cyan.vercel.app/
 
 The workflow follows a [Zoom RhythmTrak RT-223](https://www.zoom.co.jp/sites/default/files/products/downloads/pdfs/E_RT-223.pdf): Song mode with intro / verse / chorus / fill / break / end, Pattern mode for editing, Groove for stacking loops, kits, and bass programs. Sounds and patterns are original. This is not a Zoom product and not a dump of RT-223 samples.
 
@@ -19,7 +19,7 @@ Full walkthrough: [MANUAL.md](MANUAL.md). Build and install notes: [BUILD.md](BU
 
 ## Quick start in the browser
 
-1. Open https://section.pedro-muller.com/ (or run locally; see below).
+1. Open https://section-cyan.vercel.app/ (or run locally; see below).
 2. Click **Play** once so the browser can start audio.
 3. Click **Bass on** until it reads **Bass off** (or press `\`).
 4. Pick a style for guitar jams: Rock, Hard Rock, Indie Rock, Alt Rock, Blues, Blues Shuffle.

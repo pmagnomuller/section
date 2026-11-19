@@ -21,7 +21,7 @@ npm install
 npm run dev
 ```
 
-`npm run build` writes `web/dist` for https://section.pedro-muller.com/. The Vite base is `/`. `prebuild` copies `MANUAL.md` into `web/public/` so the Manual link works.
+`npm run build` writes `web/dist` for https://section-cyan.vercel.app/. The Vite base is `/`. `prebuild` copies `MANUAL.md` into `web/public/` so the Manual link works.
 
 Vercel builds the `web/` directory. It does not compile Rust, so `web/public/engine` (the wasm-bindgen output) is committed. After an engine change, rerun the two commands above and commit that folder.
 
